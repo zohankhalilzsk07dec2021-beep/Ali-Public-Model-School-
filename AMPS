@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1e3c72">
+<title>ALI PUBLIC MODEL SCHOOL</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Noto Nastaliq Urdu', serif; -webkit-tap-highlight-color:transparent; }
+body { background: linear-gradient(135deg,#1e3c72,#2a5298); min-height:100vh; color:#333; }
+
+.login-screen { position:fixed; top:0; left:0; right:0; bottom:0; background:linear-gradient(135deg,#0f2027,#203a43,#2c5364); z-index:9999; display:flex; align-items:center; justify-content:center; padding:20px; overflow-y:auto; }
+.login-screen.hidden { display:none !important; }
+.login-box { background:#fff; border-radius:20px; padding:30px 25px; max-width:400px; width:100%; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,0.5); border-top:6px solid #ffd700; }
+.login-box .logo-circle { width:85px; height:85px; border-radius:50%; background:linear-gradient(135deg,#1e3c72,#2a5298); display:flex; align-items:center; justify-content:center; font-size:42px; margin:0 auto 15px; border:4px solid #ffd700; }
+.login-box h2 { color:#1e3c72; font-size:20px; margin-bottom:5px; }
+.login-box p { color:#666; font-size:13px; margin-bottom:20px; }
+.role-tabs { display:flex; gap:6px; margin:10px 0; }
+.role-tab { flex:1; padding:10px 5px; background:#f0f4ff; border-radius:10px; cursor:pointer; font-size:11px; font-weight:bold; color:#1e3c72; border:2px solid transparent; text-align:center; }
+.role-tab.active { background:linear-gradient(135deg,#1e3c72,#2a5298); color:#fff; border-color:#ffd700; }
+.role-tab .rt-icon { font-size:18px; display:block; margin-bottom:3px; }
+.login-box input { width:100%; padding:14px; margin:8px 0; border:2px solid #ddd; border-radius:12px; font-size:14px; background:#f9f9f9; text-align:center; font-family:'Noto Nastaliq Urdu',serif; }
+.login-box input:focus { outline:none; border-color:#2a5298; background:#fff; }
+.login-btn { width:100%; background:linear-gradient(135deg,#1e3c72,#2a5298); color:#fff; border:none; padding:15px; border-radius:12px; cursor:pointer; font-size:16px; font-weight:bold; margin-top:10px; font-family:'Noto Nastaliq Urdu',serif; }
+.login-hint { font-size:11px; color:#999; margin-top:15px; background:#f0f4ff; padding:10px; border-radius:8px; line-height:1.8; }
+.login-copyright { margin-top:18px; padding-top:12px; border-top:1px dashed #ccc; font-size:11px; color:#666; }
+.login-copyright b { color:#1e3c72; font-size:13px; }
+.sync-status { font-size:11px; padding:6px 12px; border-radius:20px; display:inline-block; margin-top:8px; }
+.sync-on { background:#d4edda; color:#155724; }
+.sync-off { background:#f8d7da; color:#721c24; }
+.sync-loading { background:#fff3cd; color:#856404; }
+
+.header { background: linear-gradient(135deg,#0f2027,#203a43,#2c5364); color:#fff; padding:12px 15px; text-align:center; box-shadow:0 4px 20px rgba(0,0,0,0.4); border-bottom:4px solid #ffd700; position:sticky; top:0; z-index:200; }
+.header h1 { font-size:18px; color:#ffd700; text-shadow:2px 2px 4px #000; }
+.header p { font-size:11px; color:#e0e0e0; margin-top:3px; }
+.header-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; flex-wrap:wrap; gap:6px; }
+.header-top .date-badge { background:#ffd700; color:#000; padding:4px 10px; border-radius:20px; font-size:10px; font-weight:bold; }
+.header-top .role-badge { background:#27ae60; color:#fff; padding:4px 10px; border-radius:20px; font-size:10px; font-weight:bold; }
+.logout-btn { background:#e74c3c; color:#fff; border:none; padding:5px 10px; border-radius:20px; cursor:pointer; font-weight:bold; font-size:10px; }
+
+.home-screen { max-width:1200px; margin:auto; padding:15px; padding-bottom:130px; }
+.welcome-banner { background: linear-gradient(135deg,#ffd700,#ffb700); border-radius:18px; padding:18px; margin-bottom:15px; box-shadow:0 8px 25px rgba(255,215,0,0.4); display:flex; align-items:center; gap:12px; }
+.welcome-banner .logo { width:60px; height:60px; border-radius:50%; background:#0f2027; display:flex; align-items:center; justify-content:center; font-size:32px; flex-shrink:0; border:3px solid #fff; }
+.welcome-banner .txt h2 { color:#0f2027; font-size:18px; margin-bottom:3px; }
+.welcome-banner .txt p { color:#333; font-size:12px; font-weight:bold; }
+.welcome-banner .txt small { color:#555; font-size:10px; display:block; margin-top:3px; }
+
+.stats-row { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:15px; }
+.stat-box { background:#fff; border-radius:15px; padding:12px; text-align:center; box-shadow:0 5px 20px rgba(0,0,0,0.15); border-top:5px solid #2a5298; cursor:pointer; }
+.stat-box .num { font-size:24px; font-weight:bold; color:#1e3c72; }
+.stat-box .lbl { font-size:11px; color:#666; margin-top:3px; }
+.stat-box.gold { border-top-color:#ffd700; }
+.stat-box.green { border-top-color:#27ae60; }
+.stat-box.red { border-top-color:#e74c3c; }
+.stat-box.purple { border-top-color:#9b59b6; }
+
+.sec-title { color:#fff; font-size:15px; margin:15px 0 10px; padding-right:12px; border-right:5px solid #ffd700; text-shadow:1px 1px 3px #000; }
+.menu-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.menu-item { background:#fff; border-radius:15px; padding:15px 8px; text-align:center; cursor:pointer; box-shadow:0 5px 15px rgba(0,0,0,0.2); border-bottom:4px solid transparent; }
+.menu-item .mi-icon { font-size:28px; margin-bottom:6px; }
+.menu-item .mi-lbl { font-size:11px; color:#1e3c72; font-weight:bold; }
+.menu-item.admission { background:linear-gradient(135deg,#27ae60,#2ecc71); }
+.menu-item.admission .mi-lbl { color:#fff; }
+.menu-item.result { background:linear-gradient(135deg,#8e44ad,#9b59b6); }
+.menu-item.result .mi-lbl { color:#fff; }
+
+.section { display:none; background:#fff; margin:15px; padding:18px; border-radius:15px; box-shadow:0 10px 40px rgba(0,0,0,0.3); margin-bottom:130px; }
+.section.active { display:block; }
+.section h2 { color:#1e3c72; border-bottom:3px solid #ffd700; padding-bottom:10px; margin-bottom:15px; font-size:18px; }
+
+input,select,textarea { width:100%; padding:12px; margin:7px 0; border:2px solid #ddd; border-radius:10px; font-family:'Noto Nastaliq Urdu',serif; font-size:13px; background:#f9f9f9; }
+input:focus,select:focus { outline:none; border-color:#2a5298; background:#fff; }
+
+.btn { background:linear-gradient(135deg,#1e3c72,#2a5298); color:#fff; border:none; padding:12px 20px; border-radius:10px; cursor:pointer; font-size:14px; margin:4px; font-family:'Noto Nastaliq Urdu',serif; }
+.btn-danger { background:linear-gradient(135deg,#c0392b,#e74c3c); }
+.btn-success { background:linear-gradient(135deg,#27ae60,#2ecc71); }
+.btn-gold { background:linear-gradient(135deg,#d4af37,#ffd700); color:#000; }
+.btn-purple { background:linear-gradient(135deg,#8e44ad,#9b59b6); }
+
+table { width:100%; border-collapse:collapse; margin-top:12px; background:#fff; font-size:12px; }
+th { background:linear-gradient(135deg,#1e3c72,#2a5298); color:#fff; padding:8px 5px; font-size:11px; }
+td { padding:8px 5px; border-bottom:1px solid #eee; text-align:center; font-size:11px; }
+
+.class-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(100px,1fr)); gap:10px; margin:15px 0; }
+.class-card { background:linear-gradient(135deg,#e3f2fd,#bbdefb); border-radius:12px; padding:12px; text-align:center; cursor:pointer; border-left:5px solid #2a5298; }
+.class-card .cls-num { font-size:20px; font-weight:bold; color:#1e3c72; }
+.class-card .cls-info { font-size:10px; margin-top:5px; }
+
+.student-card { background:linear-gradient(135deg,#fff,#f0f4ff); border:4px double #1e3c72; border-radius:15px; padding:20px; margin:15px auto; max-width:450px; box-shadow:0 10px 30px rgba(0,0,0,0.3); position:relative; overflow:hidden; }
+.student-card::before { content:''; position:absolute; top:0; left:0; right:0; height:60px; background:linear-gradient(135deg,#1e3c72,#2a5298); }
+.student-card .card-header { position:relative; color:#ffd700; text-align:center; font-size:17px; font-weight:bold; margin-bottom:50px; }
+.student-card .photo { width:100px; height:100px; border-radius:50%; border:4px solid #ffd700; margin:-70px auto 10px; display:block; object-fit:cover; background:#fff; }
+.student-card .info { text-align:right; padding:10px; }
+.student-card .info p { margin:6px 0; font-size:12px; border-bottom:1px dashed #ccc; padding-bottom:4px; }
+.student-card .info b { color:#1e3c72; }
+.student-card .card-footer { text-align:center; font-size:10px; color:#888; margin-top:10px; padding-top:8px; border-top:1px dashed #ccc; }
+
+.result-print-card { background:#fff; border:4px double #1e3c72; border-radius:12px; padding:20px; margin:15px auto; max-width:700px; box-shadow:0 10px 30px rgba(0,0,0,0.2); }
+.result-print-card .rp-header { text-align:center; border-bottom:3px solid #1e3c72; padding-bottom:12px; margin-bottom:15px; }
+.result-print-card .rp-header h2 { color:#1e3c72; font-size:22px; margin-bottom:5px; }
+.result-print-card .rp-header p { font-size:12px; color:#666; }
+.result-print-card .rp-exam { text-align:center; background:#8e44ad; color:#fff; padding:8px; border-radius:8px; margin:12px 0; font-weight:bold; font-size:14px; }
+.result-print-card .rp-info { display:grid; grid-template-columns:1fr 1fr; gap:8px; background:#f0f4ff; padding:12px; border-radius:8px; margin-bottom:12px; }
+.result-print-card .rp-info div { font-size:13px; }
+.result-print-card .rp-info b { color:#1e3c72; }
+.result-print-card .rp-subjects { width:100%; border-collapse:collapse; margin-top:10px; }
+.result-print-card .rp-subjects th { background:#1e3c72; color:#fff; padding:8px; font-size:12px; border:1px solid #1e3c72; }
+.result-print-card .rp-subjects td { padding:6px; border:1px solid #ddd; text-align:center; font-size:12px; }
+.result-print-card .rp-summary { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:15px; background:#f0f4ff; padding:12px; border-radius:8px; }
+.result-print-card .rp-summary div { text-align:center; }
+.result-print-card .rp-summary .lbl { font-size:10px; color:#666; }
+.result-print-card .rp-summary .val { font-size:16px; font-weight:bold; color:#1e3c72; }
+.result-print-card .rp-footer { margin-top:15px; display:flex; justify-content:space-between; font-size:11px; padding-top:10px; border-top:1px dashed #ccc; }
+
+.subject-row { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:5px; margin:5px 0; align-items:center; }
+.subject-row input { margin:0; padding:8px; font-size:12px; }
+.result-summary { background:linear-gradient(135deg,#f0f4ff,#e3f2fd); border:2px solid #2a5298; border-radius:12px; padding:12px; margin:12px 0; display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
+.result-summary .item { text-align:center; padding:8px; background:#fff; border-radius:8px; }
+.result-summary .item .lbl { font-size:10px; color:#666; }
+.result-summary .item .val { font-size:16px; font-weight:bold; color:#1e3c72; }
+
+.grade-badge { display:inline-block; padding:4px 12px; border-radius:20px; font-weight:bold; font-size:14px; color:#fff; }
+.grade-Ap { background:linear-gradient(135deg,#27ae60,#2ecc71); }
+.grade-A { background:linear-gradient(135deg,#16a085,#1abc9c); }
+.grade-B { background:linear-gradient(135deg,#3498db,#5dade2); }
+.grade-C { background:linear-gradient(135deg,#f39c12,#f1c40f); }
+.grade-D { background:linear-gradient(135deg,#e67e22,#f39c12); }
+.grade-F { background:linear-gradient(135deg,#c0392b,#e74c3c); }
+
+.staff-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:12px; margin-top:12px; }
+.staff-card { background:linear-gradient(135deg,#fff,#fff8e1); border:3px solid #ffd700; border-radius:12px; padding:12px; text-align:center; }
+.staff-card .s-photo { width:60px; height:60px; border-radius:50%; border:3px solid #2a5298; object-fit:cover; margin:0 auto 8px; display:block; background:#eef; }
+.staff-card h4 { color:#1e3c72; font-size:13px; }
+.staff-card p { font-size:11px; color:#666; margin:3px 0; }
+
+.teacher-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:12px; margin-top:12px; }
+.teacher-card { background:linear-gradient(135deg,#fff,#e3f2fd); border:3px solid #2a5298; border-radius:12px; padding:12px; text-align:center; }
+.teacher-card .t-photo { width:70px; height:70px; border-radius:50%; border:3px solid #ffd700; object-fit:cover; margin:0 auto 8px; display:block; background:#eef; }
+.teacher-card h4 { color:#1e3c72; font-size:14px; }
+.teacher-card p { font-size:11px; color:#666; margin:3px 0; }
+
+.bottom-nav { position:fixed; bottom:0; left:0; right:0; background:#0f2027; display:flex; justify-content:space-around; padding:8px 0 6px; box-shadow:0 -4px 20px rgba(0,0,0,0.4); border-top:3px solid #ffd700; z-index:100; }
+.bottom-nav button { background:none; border:none; color:#fff; cursor:pointer; font-size:9px; display:flex; flex-direction:column; align-items:center; padding:4px; font-family:'Noto Nastaliq Urdu',serif; flex:1; }
+.bottom-nav button.active { color:#ffd700; }
+.bottom-nav .nav-icon { font-size:20px; }
+
+.copyright-footer { position:fixed; bottom:57px; left:0; right:0; background:rgba(15,32,39,0.96); color:#ffd700; text-align:center; padding:5px; font-size:10px; border-top:2px solid #ffd700; z-index:99; }
+.copyright-footer .sk-logo { display:inline-block; background:linear-gradient(135deg,#ffd700,#ffb700); color:#0f2027; padding:2px 8px; border-radius:10px; font-weight:bold; margin:0 3px; font-size:10px; }
+
+.file-label { display:inline-block; background:#2a5298; color:#fff; padding:10px 18px; border-radius:10px; cursor:pointer; margin:5px; font-size:13px; }
+input[type="file"] { display:none; }
+
+.filter-bar { display:flex; gap:8px; align-items:center; background:#f0f4ff; padding:10px; border-radius:10px; margin:10px 0; flex-wrap:wrap; }
+.filter-bar input, .filter-bar select { margin:0; flex:1; min-width:120px; font-size:12px; }
+
+.badge { display:inline-block; background:#ffd700; color:#000; padding:2px 8px; border-radius:20px; font-size:10px; font-weight:bold; }
+
+.year-box { background:linear-gradient(135deg,#e8f5e9,#c8e6c9); border-left:5px solid #27ae60; padding:10px; border-radius:10px; margin:10px 0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
+.year-box b { color:#1b5e20; font-size:12px; }
+.year-box select { margin:0; max-width:160px; font-size:12px; }
+
+.date-badge-home { background:#fff; color:#1e3c72; padding:10px 12px; border-radius:12px; margin-bottom:15px; box-shadow:0 4px 15px rgba(0,0,0,0.15); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; border-left:5px solid #ffd700; }
+.date-badge-home .dt { font-size:12px; font-weight:bold; color:#1e3c72; }
+.date-badge-home .dy { font-size:10px; color:#666; }
+
+.copyright-box { background:linear-gradient(135deg,#1e3c72,#2a5298); color:#fff; padding:20px; border-radius:15px; text-align:center; margin-top:20px; border:2px solid #ffd700; }
+.copyright-box h3 { color:#ffd700; margin-bottom:10px; font-size:16px; }
+.copyright-box .sk-badge { display:inline-block; background:linear-gradient(135deg,#ffd700,#ffb700); color:#0f2027; padding:8px 20px; border-radius:25px; font-weight:bold; font-size:15px; margin:10px 0; }
+.copyright-box p { font-size:11px; color:#e0e0e0; margin:5px 0; }
+
+.address-box { background:#f0f4ff; padding:12px; border-radius:10px; margin:8px 0; border-right:4px solid #2a5298; }
+.address-box label { font-size:12px; color:#1e3c72; font-weight:bold; display:block; margin-bottom:5px; }
+
+.admission-card { background:linear-gradient(135deg,#fff,#e8f5e9); border:3px solid #27ae60; border-radius:12px; padding:12px; margin:10px 0; }
+.admission-card .adm-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; padding-bottom:8px; border-bottom:1px dashed #27ae60; flex-wrap:wrap; gap:5px; }
+.admission-card .adm-no { background:linear-gradient(135deg,#27ae60,#2ecc71); color:#fff; padding:4px 12px; border-radius:20px; font-size:11px; font-weight:bold; }
+.admission-card .adm-date { background:#ffd700; color:#000; padding:4px 10px; border-radius:20px; font-size:10px; font-weight:bold; }
+.admission-card .adm-body { font-size:12px; line-height:1.8; }
+.admission-card .adm-body b { color:#1e3c72; }
+
+.tt-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px; }
+.tt-cell { background:linear-gradient(135deg,#e3f2fd,#bbdefb); padding:10px; border-radius:10px; text-align:center; border-left:4px solid #2a5298; font-size:12px; }
+.tt-cell b { display:block; color:#1e3c72; margin-bottom:5px; }
+
+.user-card { background:linear-gradient(135deg,#fff,#f0f4ff); border:3px solid #2a5298; border-radius:12px; padding:12px; margin:10px 0; display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; }
+.user-card .uc-info { flex:1; }
+.user-card h4 { color:#1e3c72; font-size:14px; margin-bottom:3px; }
+.user-card p { font-size:11px; color:#666; }
+.user-card .uc-actions { display:flex; gap:5px; }
+.role-badge-user { display:inline-block; padding:2px 10px; border-radius:20px; font-size:10px; font-weight:bold; color:#fff; }
+.role-admin { background:linear-gradient(135deg,#e74c3c,#c0392b); }
+.role-teacher { background:linear-gradient(135deg,#3498db,#2980b9); }
+.role-parent { background:linear-gradient(135deg,#27ae60,#229954); }
+.role-staff { background:linear-gradient(135deg,#9b59b6,#8e44ad); }
+
+@media(max-width:400px){ .menu-grid { grid-template-columns:repeat(2,1fr); } }
+
+@media print {
+  body * { visibility: hidden; }
+  #printArea, #printArea * { visibility: visible; }
+  #printArea { position: absolute; left: 0; top: 0; width: 100%; }
+  .bottom-nav, .copyright-footer, .header { display: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="logo-circle">🏫</div>
+    <h2>علی پبلک ماڈل سکول</h2>
+    <p>بستی نہووالہ، نوں</p>
+    
+    <div class="role-tabs">
+      <div class="role-tab active" data-role="admin" onclick="selectRole('admin', this)"><span class="rt-icon">👑</span>ایڈمن</div>
+      <div class="role-tab" data-role="teacher" onclick="selectRole('teacher', this)"><span class="rt-icon">👨‍🏫</span>ٹیچر</div>
+      <div class="role-tab" data-role="parent" onclick="selectRole('parent', this)"><span class="rt-icon">👨‍👩‍👧</span>والدین</div>
+    </div>
+    
+    <input type="text" id="loginId" placeholder="🆔 CNIC نمبر" maxlength="15">
+    <input type="password" id="loginPass" placeholder="🔒 پاس ورڈ">
+    <button class="login-btn" onclick="doLogin()">🔓 لاگ ان</button>
+    
+    <div id="syncStatus" class="sync-status sync-loading">⏳ Firebase connect ho raha hai...</div>
+    
+    <div class="login-hint">
+      <b>ڈیمو CNIC:</b><br>
+      👑 Admin: 35202-1234567-1<br>
+      👨‍🏫 Teacher: 35202-7654321-1<br>
+      👨‍👩‍👧 Parent: 35202-1111111-1<br>
+      <b>پاس ورڈ:</b> admin123
+    </div>
+    
+    <div class="login-copyright">
+      <b>💻 KHALIL Developer</b><br>© 2025 All Rights Reserved
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="header" id="mainHeader" style="display:none;">
+  <div class="header-top">
+    <span class="date-badge" id="headerDate">--</span>
+    <span class="role-badge" id="roleBadge">👑 Admin</span>
+    <button class="logout-btn" onclick="doLogout()">🚪 لاگ آؤٹ</button>
+  </div>
+  <h1 id="schoolName">علی پبلک ماڈل سکول</h1>
+  <p id="schoolAddr">بستی نہووالہ، نوں</p>
+</div>
+
+<div id="mainContainer" style="display:none;">
+
+<!-- HOME -->
+<div class="home-screen" id="homeScreen">
+  <div class="date-badge-home">
+    <div>
+      <div class="dt" id="homeDate">📅 --</div>
+      <div class="dy" id="homeDay">--</div>
+    </div>
+    <div style="text-align:left;">
+      <div class="dt" id="homeYear">🎓 2025-26</div>
+      <div class="dy" id="homeUser">🆔 --</div>
+    </div>
+  </div>
+
+  <div class="welcome-banner">
+    <div class="logo">🏫</div>
+    <div class="txt">
+      <h2 id="welcomeRole">خوش آمدید!</h2>
+      <p>علم کی روشنی، مستقبل کی تعمیر</p>
+      <small id="welcomeName">🆔 User</small>
+    </div>
+  </div>
+
+  <div class="year-box">
+    <b>📆 تعلیمی سال:</b>
+    <select id="academicYear" onchange="changeYear()">
+      <option value="2023-24">2023-24</option>
+      <option value="2024-25">2024-25</option>
+      <option value="2025-26" selected>2025-26</option>
+      <option value="2026-27">2026-27</option>
+      <option value="2027-28">2027-28</option>
+    </select>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-box" onclick="showSection('students')"><div class="num" id="statStudents">0</div><div class="lbl">کل طلباء</div></div>
+    <div class="stat-box green" onclick="showSection('teachers')"><div class="num" id="statTeachers">0</div><div class="lbl">کل اساتذہ</div></div>
+    <div class="stat-box purple" onclick="showSection('results')"><div class="num" id="statResults">0</div><div class="lbl">🎓 نتائج</div></div>
+    <div class="stat-box red" onclick="showSection('staff')"><div class="num" id="statStaff">0</div><div class="lbl">کل اسٹاف</div></div>
+  </div>
+
+  <h3 class="sec-title">📋 مرکزی مینو</h3>
+  <div class="menu-grid" id="menuGrid"></div>
+</div>
+
+<!-- TEACHERS -->
+<div class="section" id="teachers">
+  <h2>👨‍🏫 اساتذہ</h2>
+  <input type="text" id="tName" placeholder="استاد کا نام *">
+  <input type="text" id="tFather" placeholder="والد کا نام">
+  <input type="text" id="tCnic" placeholder="CNIC">
+  <input type="text" id="tSubject" placeholder="مضمون">
+  <input type="text" id="tQual" placeholder="قابلیت">
+  <input type="text" id="tPhone" placeholder="فون">
+  <input type="text" id="tSalary" placeholder="تنخواہ">
+  <select id="tDesignation">
+    <option value="">عہدہ</option>
+    <option value="Principal">پرنسپل</option>
+    <option value="Senior Teacher">سینئر ٹیچر</option>
+    <option value="Junior Teacher">جونیئر ٹیچر</option>
+    <option value="Qari Sahib">قاری صاحب</option>
+  </select>
+  <label class="file-label">📷 تصویر<input type="file" id="tPhoto" accept="image/*" onchange="previewTeacherPhoto(event)"></label>
+  <img id="teacherPhotoPreview" style="display:none;width:80px;height:80px;border-radius:50%;margin:10px;">
+  <br>
+  <button class="btn btn-success" onclick="addTeacher()">➕ استاد شامل کریں</button>
+  <div class="teacher-grid" id="teachersGrid"></div>
+</div>
+
+<!-- STUDENTS -->
+<div class="section" id="students">
+  <h2>👨‍🎓 طلباء</h2>
+  <input type="text" id="sName" placeholder="طالب علم کا نام">
+  <input type="text" id="sFather" placeholder="والد کا نام">
+  <input type="date" id="sDob">
+  <select id="sClass">
+    <option value="">کلاس</option>
+    <option value="Nursery">نرسری</option>
+    <option value="KG">کے جی</option>
+    <option value="Class 1">Class 1</option>
+    <option value="Class 2">Class 2</option>
+    <option value="Class 3">Class 3</option>
+    <option value="Class 4">Class 4</option>
+    <option value="Class 5">Class 5</option>
+    <option value="Class 6">Class 6</option>
+    <option value="Class 7">Class 7</option>
+    <option value="Class 8">Class 8</option>
+    <option value="Class 9">Class 9</option>
+    <option value="Class 10">Class 10</option>
+  </select>
+  <input type="text" id="sRoll" placeholder="رول نمبر">
+  <input type="text" id="sPhone" placeholder="فون">
+  <input type="text" id="sAddress" placeholder="پتہ">
+  <label class="file-label">📷 تصویر<input type="file" id="sPhoto" accept="image/*" onchange="previewPhoto(event)"></label>
+  <img id="photoPreview" style="display:none;width:80px;height:80px;border-radius:50%;margin:10px;">
+  <br>
+  <button class="btn btn-success" onclick="addStudent()">➕ شامل کریں</button>
+  <div class="filter-bar"><input type="text" id="searchStudent" placeholder="🔍 تلاش" oninput="renderStudents()"></div>
+  <table><thead><tr><th>تصویر</th><th>نام</th><th>والد</th><th>کلاس</th><th>رول</th><th>عمل</th></tr></thead><tbody id="studentsTable"></tbody></table>
+</div>
+
+<!-- ADMISSIONS -->
+<div class="section" id="admissions">
+  <h2>🎓 نیا ایڈمیشن</h2>
+  <div style="background:linear-gradient(135deg,#ffd700,#ffb700);padding:12px;border-radius:10px;text-align:center;margin:10px 0;">
+    <b style="color:#0f2027;font-size:12px;">🎫 ایڈمیشن نمبر</b>
+    <span id="newAdmNo" style="font-size:20px;font-weight:bold;color:#0f2027;display:block;margin-top:5px;">ADM-2025-001</span>
+  </div>
+  <input type="text" id="admName" placeholder="طالب علم کا نام *">
+  <input type="text" id="admFather" placeholder="والد کا نام *">
+  <input type="date" id="admDob">
+  <input type="text" id="admPhone" placeholder="فون">
+  <input type="text" id="admAddress" placeholder="پتہ">
+  <select id="admClass">
+    <option value="">کلاس *</option>
+    <option value="Nursery">نرسری</option>
+    <option value="KG">کے جی</option>
+    <option value="Class 1">پہلی</option>
+    <option value="Class 2">دوسری</option>
+    <option value="Class 3">تیسری</option>
+    <option value="Class 4">چوتھی</option>
+    <option value="Class 5">پانچویں</option>
+    <option value="Class 6">چھٹی</option>
+    <option value="Class 7">ساتویں</option>
+    <option value="Class 8">آٹھویں</option>
+    <option value="Class 9">نویں</option>
+    <option value="Class 10">دسویں</option>
+  </select>
+  <input type="text" id="admRoll" placeholder="رول نمبر">
+  <label class="file-label">📷 تصویر<input type="file" id="admPhoto" accept="image/*" onchange="previewAdmPhoto(event)"></label>
+  <img id="admPhotoPreview" style="display:none;width:100px;height:100px;border-radius:50%;margin:10px;">
+  <br>
+  <button class="btn btn-success" onclick="submitAdmission()" style="width:100%;padding:14px;">✅ ایڈمیشن مکمل</button>
+  <div id="admissionsList"></div>
+</div>
+
+<!-- RESULTS -->
+<div class="section" id="results">
+  <h2>📊 نتیجہ کارڈ</h2>
+  <select id="resClass" onchange="loadClassStudents()">
+    <option value="">کلاس منتخب کریں</option>
+    <option value="Nursery">نرسری</option>
+    <option value="KG">کے جی</option>
+    <option value="Class 1">Class 1</option>
+    <option value="Class 2">Class 2</option>
+    <option value="Class 3">Class 3</option>
+    <option value="Class 4">Class 4</option>
+    <option value="Class 5">Class 5</option>
+    <option value="Class 6">Class 6</option>
+    <option value="Class 7">Class 7</option>
+    <option value="Class 8">Class 8</option>
+    <option value="Class 9">Class 9</option>
+    <option value="Class 10">Class 10</option>
+  </select>
+  <select id="resStudent"><option value="">طالب علم</option></select>
+  <input type="text" id="resExamName" placeholder="امتحان کا نام">
+  <input type="text" id="resExamTerm" placeholder="ٹرم">
+  <div style="background:#f0f4ff;padding:10px;border-radius:10px;">
+    <div class="subject-row" style="background:#1e3c72;padding:8px;border-radius:6px;color:#fff;font-weight:bold;">
+      <div style="text-align:center;">مضمون</div><div style="text-align:center;">کل</div><div style="text-align:center;">حاصل</div><div style="text-align:center;">گریڈ</div>
+    </div>
+    <div id="subjectsContainer"></div>
+    <button class="btn btn-success" onclick="addSubjectRow()" style="width:100%;margin-top:10px;">➕ نیا مضمون</button>
+  </div>
+  <div class="result-summary" id="resultSummary" style="display:none;">
+    <div class="item"><div class="lbl">کل</div><div class="val" id="sumTotal">0</div></div>
+    <div class="item"><div class="lbl">حاصل</div><div class="val" id="sumObtained">0</div></div>
+    <div class="item"><div class="lbl">فیصد</div><div class="val" id="sumPercent">0%</div></div>
+    <div class="item"><div class="lbl">گریڈ</div><div class="val" id="sumGrade">-</div></div>
+  </div>
+  <button class="btn btn-purple" onclick="saveResult()" style="width:100%;padding:14px;">💾 نتیجہ محفوظ</button>
+  <h3 style="color:#1e3c72;margin:20px 0 10px;font-size:14px;">📋 محفوظ نتائج</h3>
+  <div id="resultsList"></div>
+</div>
+
+<!-- RESULT PRINT -->
+<div class="section" id="resultPrint">
+  <h2>🖨️ نتیجہ پرنٹ</h2>
+  <select id="printStudent"><option value="">طالب علم منتخب کریں</option></select>
+  <button class="btn btn-gold" onclick="generatePrintCard()">🖨️ کارڈ بنائیں</button>
+  <div id="printArea"></div>
+</div>
+
+<!-- STAFF -->
+<div class="section" id="staff">
+  <h2>👥 اسٹاف</h2>
+  <input type="text" id="stName" placeholder="نام">
+  <select id="stRole">
+    <option value="">عہدہ</option>
+    <option value="Clerk">کلرک</option>
+    <option value="Accountant">اکاؤنٹنٹ</option>
+    <option value="Peon">پیون</option>
+    <option value="Guard">گارڈ</option>
+    <option value="Sweeper">صفائی کار</option>
+    <option value="Driver">ڈرائیور</option>
+  </select>
+  <input type="text" id="stPhone" placeholder="فون">
+  <input type="text" id="stSalary" placeholder="تنخواہ">
+  <label class="file-label">📷 تصویر<input type="file" id="stPhoto" accept="image/*" onchange="previewStaffPhoto(event)"></label>
+  <img id="staffPhotoPreview" style="display:none;width:80px;height:80px;border-radius:50%;margin:10px;">
+  <br>
+  <button class="btn btn-success" onclick="addStaff()">➕ شامل کریں</button>
+  <div class="staff-grid" id="staffGrid"></div>
+</div>
+
+<!-- CLASSES -->
+<div class="section" id="classes">
+  <h2>🏫 کلاسز</h2>
+  <div class="class-grid" id="classGrid"></div>
+</div>
+
+<!-- TIMETABLE -->
+<div class="section" id="timetable">
+  <h2>📅 ٹائم ٹیبل</h2>
+  <select id="ttClass"><option value="">کلاس</option><option value="Nursery">نرسری</option><option value="KG">کے جی</option><option value="Class 1">Class 1</option><option value="Class 2">Class 2</option><option value="Class 3">Class 3</option><option value="Class 4">Class 4</option><option value="Class 5">Class 5</option><option value="Class 6">Class 6</option><option value="Class 7">Class 7</option><option value="Class 8">Class 8</option><option value="Class 9">Class 9</option><option value="Class 10">Class 10</option></select>
+  <select id="ttDay"><option value="">دن</option><option value="Monday">پیر</option><option value="Tuesday">منگل</option><option value="Wednesday">بدھ</option><option value="Thursday">جمعرات</option><option value="Friday">جمعہ</option><option value="Saturday">ہفتہ</option></select>
+  <input type="text" id="ttPeriod" placeholder="پیریڈ">
+  <input type="text" id="ttSubject" placeholder="مضمون">
+  <input type="text" id="ttTime" placeholder="وقت">
+  <button class="btn btn-success" onclick="addTT()">➕ شامل کریں</button>
+  <div class="tt-grid" id="ttGrid" style="margin-top:15px;"></div>
+</div>
+
+<!-- STUDENT CARD -->
+<div class="section" id="studentCard">
+  <h2>🪪 اسٹوڈنٹ کارڈ</h2>
+  <select id="cardStudent"><option value="">طالب علم</option></select>
+  <button class="btn btn-gold" onclick="generateCard()">🪪 کارڈ بنائیں</button>
+  <div id="cardOutput"></div>
+</div>
+
+<!-- USERS -->
+<div class="section" id="users">
+  <h2>👥 صارفین کا انتظام</h2>
+  <input type="text" id="newUserName" placeholder="نام">
+  <input type="text" id="newUserCnic" placeholder="CNIC">
+  <input type="password" id="newUserPass" placeholder="پاس ورڈ">
+  <select id="newUserRole">
+    <option value="">کردار</option>
+    <option value="admin">👑 ایڈمن</option>
+    <option value="teacher">👨‍🏫 ٹیچر</option>
+    <option value="parent">👨‍👩‍👧 والدین</option>
+    <option value="staff">👤 اسٹاف</option>
+  </select>
+  <button class="btn btn-success" onclick="addUser()">➕ صارف شامل کریں</button>
+  <div id="usersList"></div>
+</div>
+
+<!-- SETTINGS -->
+<div class="section" id="settings">
+  <h2>⚙️ سیٹنگز</h2>
+  <input type="text" id="setSchoolName" placeholder="سکول کا نام">
+  <input type="text" id="setAddress" placeholder="پتہ">
+  <button class="btn" onclick="saveSettings()">💾 محفوظ</button>
+  <button class="btn btn-danger" onclick="clearAll()">🗑️ ڈیٹا صاف</button>
+  <div class="copyright-box">
+    <h3>💻 App Developed By</h3>
+    <div class="sk-badge">KHALIL Developer</div>
+    <p>© 2025 All Rights Reserved.</p>
+    <p>📱 Version 4.0 - Firebase Online</p>
+  </div>
+</div>
+
+</div>
+
+<div class="copyright-footer" id="copyrightFooter" style="display:none;">
+  © 2025 <span class="sk-logo">💻 KHALIL Developer</span> | v4.0 Online
+</div>
+
+<div class="bottom-nav" id="bottomNav" style="display:none;">
+  <button onclick="showSection('home')" class="active"><span class="nav-icon">🏠</span><span>ہوم</span></button>
+  <button onclick="showSection('admissions')"><span class="nav-icon">🎓</span><span>ایڈمیشن</span></button>
+  <button onclick="showSection('students')"><span class="nav-icon">👨‍🎓</span><span>طلباء</span></button>
+  <button onclick="showSection('teachers')"><span class="nav-icon">👨‍🏫</span><span>اساتذہ</span></button>
+  <button onclick="showSection('results')"><span class="nav-icon">📊</span><span>نتیجہ</span></button>
+  <button onclick="showSection('settings')"><span class="nav-icon">⚙️</span><span>سیٹنگ</span></button>
+</div>
+
+<!-- FIREBASE SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+// ✅ AAPKI FIREBASE CONFIG
+const firebaseConfig = {
+  apiKey: "AIzaSyC_jgDLALbS0tbU01h9tzRbpylSHUQUZ_s",
+  authDomain: "ali-public-model-school.firebaseapp.com",
+  projectId: "ali-public-model-school",
+  storageBucket: "ali-public-model-school.firebasestorage.app",
+  messagingSenderId: "937151361741",
+  appId: "1:937151361741:web:c331b6034225bb37b2af84",
+  measurementId: "G-FNGM61NRG4"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Global
+window.db = db;
+window.fbFunctions = { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, onSnapshot, query, orderBy };
+
+// Update sync status
+window.updateSyncStatus = function(status) {
+  const el = document.getElementById('syncStatus');
+  if (!el) return;
+  if (status === 'on') {
+    el.className = 'sync-status sync-on';
+    el.textContent = '✅ Firebase Online - Sab phones mein sync';
+  } else if (status === 'off') {
+    el.className = 'sync-status sync-off';
+    el.textContent = '❌ Firebase Offline - Local data';
+  } else {
+    el.className = 'sync-status sync-loading';
+    el.textContent = '⏳ Firebase connect ho raha hai...';
+  }
+};
+
+window.updateSyncStatus('on');
+window.firebaseReady = true;
+</script>
+
+<script>
+// ===== VARIABLES =====
+var ALL_CLASSES = ['Nursery','KG','Class 1','Class 2','Class 3','Class 4','Class 5','Class 6','Class 7','Class 8','Class 9','Class 10'];
+var CLASS_URDU = {'Nursery':'نرسری','KG':'کے جی','Class 1':'پہلی','Class 2':'دوسری','Class 3':'تیسری','Class 4':'چوتھی','Class 5':'پانچویں','Class 6':'چھٹی','Class 7':'ساتویں','Class 8':'آٹھویں','Class 9':'نویں','Class 10':'دسویں'};
+var DEFAULT_SUBJECTS = [
+  { name: 'اردو', total: 100 },{ name: 'انگریزی', total: 100 },
+  { name: 'ریاضی', total: 100 },{ name: 'اسلامیات', total: 100 },
+  { name: 'سائنس', total: 100 },{ name: 'سوشل اسٹڈیز', total: 100 }
+];
+var DEFAULT_USERS = [
+  { name: 'Admin', cnic: '35202-1234567-1', pass: 'admin123', role: 'admin' },
+  { name: 'Teacher Ali', cnic: '35202-7654321-1', pass: 'admin123', role: 'teacher' },
+  { name: 'Parent Khan', cnic: '35202-1111111-1', pass: 'admin123', role: 'parent' }
+];
+
+var students = [];
+var teachers = [];
+var classes = [];
+var timetable = [];
+var staff = [];
+var admissions = [];
+var results = [];
+var users = [];
+
+var currentPhoto = '', staffPhoto = '', admPhoto = '', teacherPhoto = '';
+var currentUser = null;
+var currentRole = 'admin';
+var selectedRole = 'admin';
+
+// ===== FIRESTORE HELPERS =====
+async function fbLoad(collectionName) {
+  if (!window.firebaseReady) return [];
+  try {
+    const q = window.fbFunctions.query(window.fbFunctions.collection(window.db, collectionName));
+    const snapshot = await window.fbFunctions.getDocs(q);
+    var arr = [];
+    snapshot.forEach(function(d) { arr.push(Object.assign({}, d.data(), { _id: d.id })); });
+    return arr;
+  } catch (e) { console.log('Load error', collectionName, e); return []; }
+}
+
+async function fbAdd(collectionName, data) {
+  if (!window.firebaseReady) return null;
+  try {
+    const ref = await window.fbFunctions.addDoc(window.fbFunctions.collection(window.db, collectionName), data);
+    return ref.id;
+  } catch (e) { console.log('Add error', e); return null; }
+}
+
+async function fbDelete(collectionName, data) {
+  if (!window.firebaseReady) return;
+  try {
+    // Find by id field
+    const q = window.fbFunctions.query(window.fbFunctions.collection(window.db, collectionName));
+    const snapshot = await window.fbFunctions.getDocs(q);
+    snapshot.forEach(async function(d) {
+      if (d.data().id === data.id) {
+        await window.fbFunctions.deleteDoc(window.fbFunctions.doc(window.db, collectionName, d.id));
+      }
+    });
+  } catch (e) { console.log('Delete error', e); }
+}
+
+async function loadAllFromFirebase() {
+  students = await fbLoad('students');
+  teachers = await fbLoad('teachers');
+  classes = await fbLoad('classes');
+  timetable = await fbLoad('timetable');
+  staff = await fbLoad('staff');
+  admissions = await fbLoad('admissions');
+  results = await fbLoad('results');
+  users = await fbLoad('users');
+  
+  // Seed default users if empty
+  if (users.length === 0) {
+    for (var i = 0; i < DEFAULT_USERS.length; i++) {
+      await fbAdd('users', DEFAULT_USERS[i]);
+    }
+    users = DEFAULT_USERS.slice();
+  }
+}
+
+// ===== INIT =====
+async function initApp() {
+  // Wait for Firebase to be ready
+  var attempts = 0;
+  while (!window.firebaseReady && attempts < 50) {
+    await new Promise(function(r) { setTimeout(r, 100); });
+    attempts++;
+  }
+  
+  if (window.firebaseReady) {
+    window.updateSyncStatus('on');
+    await loadAllFromFirebase();
+  } else {
+    window.updateSyncStatus('off');
+    // Load from localStorage as fallback
+    students = JSON.parse(localStorage.getItem('apms_students') || '[]');
+    teachers = JSON.parse(localStorage.getItem('apms_teachers') || '[]');
+    classes = JSON.parse(localStorage.getItem('apms_classes') || '[]');
+    timetable = JSON.parse(localStorage.getItem('apms_tt') || '[]');
+    staff = JSON.parse(localStorage.getItem('apms_staff') || '[]');
+    admissions = JSON.parse(localStorage.getItem('apms_admissions') || '[]');
+    results = JSON.parse(localStorage.getItem('apms_results') || '[]');
+    users = JSON.parse(localStorage.getItem('apms_users') || JSON.stringify(DEFAULT_USERS));
+  }
+  
+  // Check auto login
+  if (localStorage.getItem('apms_logged') === 'yes') {
+    var cnic = localStorage.getItem('apms_current_cnic');
+    var u = users.find(function(x) { return x.cnic === cnic; });
+    if (u) { currentUser = u; currentRole = u.role; startApp(); }
+  }
+}
+
+// ===== SAVE =====
+function saveAll() {
+  // Save to localStorage (backup)
+  localStorage.setItem('apms_students', JSON.stringify(students));
+  localStorage.setItem('apms_teachers', JSON.stringify(teachers));
+  localStorage.setItem('apms_classes', JSON.stringify(classes));
+  localStorage.setItem('apms_tt', JSON.stringify(timetable));
+  localStorage.setItem('apms_staff', JSON.stringify(staff));
+  localStorage.setItem('apms_admissions', JSON.stringify(admissions));
+  localStorage.setItem('apms_results', JSON.stringify(results));
+  localStorage.setItem('apms_users', JSON.stringify(users));
+}
+
+// ===== LOGIN =====
+function selectRole(role, el) {
+  selectedRole = role;
+  var tabs = document.querySelectorAll('.role-tab');
+  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
+  el.classList.add('active');
+}
+
+function doLogin() {
+  var id = document.getElementById('loginId').value.trim().replace(/\s/g, '');
+  var pass = document.getElementById('loginPass').value;
+  var user = null;
+  for (var i = 0; i < users.length; i++) {
+    if (users[i].cnic === id && users[i].pass === pass) { user = users[i]; break; }
+  }
+  if (user) {
+    currentUser = user; currentRole = user.role;
+    localStorage.setItem('apms_logged', 'yes');
+    localStorage.setItem('apms_current_cnic', user.cnic);
+    startApp();
+  } else {
+    alert('❌ غلط CNIC یا پاس ورڈ!\n\n👑 Admin: 35202-1234567-1\n👨‍🏫 Teacher: 35202-7654321-1\n👨‍👩‍👧 Parent: 35202-1111111-1\n\nپاس ورڈ: admin123');
+  }
+}
+
+function doLogout() {
+  if (!confirm('لاگ آؤٹ کریں؟')) return;
+  localStorage.removeItem('apms_logged');
+  localStorage.removeItem('apms_current_cnic');
+  location.reload();
+}
+
+function startApp() {
+  document.getElementById('loginScreen').classList.add('hidden');
+  document.getElementById('mainHeader').style.display = 'block';
+  document.getElementById('mainContainer').style.display = 'block';
+  document.getElementById('copyrightFooter').style.display = 'block';
+  document.getElementById('bottomNav').style.display = 'flex';
+  var roleNames = { admin: '👑 ایڈمن', teacher: '👨‍🏫 ٹیچر', parent: '👨‍👩‍👧 والدین', staff: '👤 اسٹاف' };
+  document.getElementById('roleBadge').textContent = roleNames[currentRole] || 'User';
+  document.getElementById('welcomeName').textContent = '👤 ' + currentUser.name;
+  document.getElementById('homeUser').textContent = '🆔 ' + currentUser.cnic;
+  document.getElementById('welcomeRole').textContent = 'خوش آمدید ' + currentUser.name + '!';
+  updateDateTime(); generateAdmNo(); loadDefaultSubjects(); buildMenu(); renderAll();
+}
+
+function buildMenu() {
+  var menu = '<div class="menu-item result" onclick="showSection(\'results\')"><div class="mi-icon">📊</div><div class="mi-lbl">نتیجہ کارڈ</div></div>';
+  if (currentRole === 'admin') {
+    menu += '<div class="menu-item admission" onclick="showSection(\'admissions\')"><div class="mi-icon">🎓</div><div class="mi-lbl">نیا ایڈمیشن</div></div>';
+    menu += '<div class="menu-item" onclick="showSection(\'students\')"><div class="mi-icon">👨‍🎓</div><div class="mi-lbl">طلباء</div></div>';
+    menu += '<div class="menu-item" onclick="showSection(\'teachers\')"><div class="mi-icon">👨‍🏫</div><div class="mi-lbl">اساتذہ</div></div>';
+    menu += '<div class="menu-item" onclick="showSection(\'staff\')"><div class="mi-icon">👥</div><div class="mi-lbl">اسٹاف</div></div>';
+    menu += '<div class="menu-item" onclick="showSection(\'classes\')"><div class="mi-icon">🏫</div><div class="mi-lbl">کلاسز</div></div>';
+    menu += '<div class="menu-item" onclick="showSection(\'timetable\')"><div class="mi-icon">📅</div><div class="mi-lbl">ٹائم ٹیبل</div></div>';
+    menu += '<div class="menu-item" onclick="showSection(\'studentCard\')"><div class="mi-icon">🪪</div><div class="mi-lbl">اسٹوڈنٹ کارڈ</div></div>';
+    menu += '<div class="menu-item" onclick="showSection(\'resultPrint\')"><div class="mi-icon">🖨️</div><div class="mi-lbl">نتیجہ پرنٹ</div></div>';
+    menu += '<div class="menu-item" onclick="showSection(\'users\')"><div class="mi-icon">👥</div><div class="mi-lbl">صارفین</div></div>';
+    menu += '<div class="menu-item" onclick="showSection(\'settings\')"><div class="mi-icon">⚙️</div><div class="mi-lbl">سیٹنگز</div></div>';
+  } else if (currentRole === 'teacher') {
+    menu += '<div class="menu-item" onclick="showSection(\'students\')"><div class="mi-icon">👨‍🎓</div><div class="mi-lbl">طلباء</div></div>';
+    menu += '<div class="menu-item" onclick="showSection(\'timetable\')"><div class="mi-icon">📅</div><div class="mi-lbl">ٹائم ٹیبل</div></div>';
+    menu += '<div class="menu-item" onclick="showSection(\'resultPrint\')"><div class="mi-icon">🖨️</div><div class="mi-lbl">نتیجہ پرنٹ</div></div>';
+  } else if (currentRole === 'parent') {
+    menu += '<div class="menu-item" onclick="showSection(\'studentCard\')"><div class="mi-icon">🪪</div><div class="mi-lbl">اسٹوڈنٹ کارڈ</div></div>';
+    menu += '<div class="menu-item" onclick="showSection(\'resultPrint\')"><div class="mi-icon">🖨️</div><div class="mi-lbl">نتیجہ پرنٹ</div></div>';
+  } else if (currentRole === 'staff') {
+    menu += '<div class="menu-item" onclick="showSection(\'students\')"><div class="mi-icon">👨‍🎓</div><div class="mi-lbl">طلباء</div></div>';
+    menu += '<div class="menu-item" onclick="showSection(\'classes\')"><div class="mi-icon">🏫</div><div class="mi-lbl">کلاسز</div></div>';
+  }
+  document.getElementById('menuGrid').innerHTML = menu;
+}
+
+function updateDateTime() {
+  var now = new Date();
+  var days = ['اتوار','پیر','منگل','بدھ','جمعرات','جمعہ','ہفتہ'];
+  var months = ['جنوری','فروری','مارچ','اپریل','مئی','جون','جولائی','اگست','ستمبر','اکتوبر','نومبر','دسمبر'];
+  var dateStr = now.getDate() + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
+  document.getElementById('headerDate').textContent = '📅 ' + dateStr;
+  document.getElementById('homeDate').textContent = '📅 ' + dateStr;
+  document.getElementById('homeDay').textContent = '🗓️ ' + days[now.getDay()];
+}
+
+function changeYear() {
+  var y = document.getElementById('academicYear').value;
+  localStorage.setItem('apms_year', y);
+  document.getElementById('homeYear').textContent = '🎓 ' + y;
+  generateAdmNo();
+}
+
+function showSection(id) {
+  var sections = document.querySelectorAll('.section');
+  for (var i = 0; i < sections.length; i++) sections[i].classList.remove('active');
+  if (id === 'home') document.getElementById('homeScreen').style.display = 'block';
+  else { document.getElementById('homeScreen').style.display = 'none'; document.getElementById(id).classList.add('active'); }
+  window.scrollTo(0, 0);
+}
+
+// ===== USERS =====
+async function addUser() {
+  var name = document.getElementById('newUserName').value.trim();
+  var cnic = document.getElementById('newUserCnic').value.trim();
+  var pass = document.getElementById('newUserPass').value.trim();
+  var role = document.getElementById('newUserRole').value;
+  if (!name || !cnic || !pass || !role) { alert('تمام فیلڈز بھریں'); return; }
+  for (var i = 0; i < users.length; i++) if (users[i].cnic === cnic) { alert('Ye CNIC registered!'); return; }
+  var userObj = { name: name, cnic: cnic, pass: pass, role: role };
+  await fbAdd('users', userObj);
+  users.push(userObj);
+  saveAll();
+  document.getElementById('newUserName').value='';
+  document.getElementById('newUserCnic').value='';
+  document.getElementById('newUserPass').value='';
+  document.getElementById('newUserRole').value='';
+  renderUsers();
+  alert('✅ صارف شامل!');
+}
+
+function renderUsers() {
+  var html = '';
+  var roleNames = { admin: 'ایڈمن', teacher: 'ٹیچر', parent: 'والدین', staff: 'اسٹاف' };
+  var roleClasses = { admin: 'role-admin', teacher: 'role-teacher', parent: 'role-parent', staff: 'role-staff' };
+  for (var i = 0; i < users.length; i++) {
+    var u = users[i];
+    html += '<div class="user-card"><div class="uc-info">';
+    html += '<h4>' + u.name + ' <span class="role-badge-user ' + (roleClasses[u.role]||'') + '">' + (roleNames[u.role]||u.role) + '</span></h4>';
+    html += '<p>🆔 ' + u.cnic + '</p></div>';
+    html += '<div class="uc-actions">';
+    if (currentUser && u.cnic !== currentUser.cnic) html += '<button class="btn btn-danger" style="padding:6px 10px;font-size:11px;" onclick="delUser(\'' + u.cnic + '\')">🗑️</button>';
+    else html += '<span class="badge">آپ</span>';
+    html += '</div></div>';
+  }
+  document.getElementById('usersList').innerHTML = html;
+}
+
+async function delUser(cnic) {
+  if (!confirm('حذف کریں؟')) return;
+  await fbDelete('users', { id: cnic });
+  users = users.filter(function(u) { return u.cnic !== cnic; });
+  saveAll(); renderUsers();
+}
+
+// ===== RESULT PRINT =====
+function renderPrintOptions() {
+  var sel = document.getElementById('printStudent');
+  sel.innerHTML = '<option value="">طالب علم منتخب کریں</option>';
+  for (var i = 0; i < results.length; i++) sel.innerHTML += '<option value="' + results[i].id + '">' + results[i].studentName + ' - ' + results[i].examName + '</option>';
+}
+
+function generatePrintCard() {
+  var id = parseInt(document.getElementById('printStudent').value);
+  var r = results.find(function(x) { return x.id === id; });
+  if (!r) { alert('نتیجہ منتخب کریں'); return; }
+  var school = localStorage.getItem('apms_school') || 'علی پبلک ماڈل سکول';
+  var addr = localStorage.getItem('apms_addr') || 'بستی نہووالہ، نوں';
+  var subjectRows = '';
+  for (var i = 0; i < r.subjects.length; i++) {
+    var s = r.subjects[i];
+    subjectRows += '<tr><td>' + (i+1) + '</td><td style="text-align:right;padding-right:10px;">' + s.name + '</td><td>' + s.total + '</td><td>' + s.obtained + '</td><td>' + s.grade + '</td></tr>';
+  }
+  var html = '<div class="result-print-card"><div class="rp-header"><h2>' + school + '</h2><p>' + addr + '</p></div>';
+  html += '<div class="rp-exam">🎓 ' + r.examName + ' - ' + r.examTerm + ' (' + r.academicYear + ')</div>';
+  html += '<div class="rp-info"><div><b>👤 نام:</b> ' + r.studentName + '</div><div><b>👨 والد:</b> ' + r.fatherName + '</div><div><b>🏫 کلاس:</b> ' + (CLASS_URDU[r.cls]||r.cls) + '</div><div><b>🔢 رول:</b> ' + (r.roll||'-') + '</div></div>';
+  html += '<table class="rp-subjects"><thead><tr><th>#</th><th>مضمون</th><th>کل</th><th>حاصل</th><th>گریڈ</th></tr></thead><tbody>' + subjectRows;
+  html += '<tr style="background:#f0f4ff;font-weight:bold;"><td colspan="2">کل</td><td>' + r.totalMarks + '</td><td>' + r.obtainedMarks + '</td><td>' + r.percent + '%</td></tr></tbody></table>';
+  html += '<div class="rp-summary"><div><div class="lbl">کل</div><div class="val">' + r.totalMarks + '</div></div><div><div class="lbl">حاصل</div><div class="val">' + r.obtainedMarks + '</div></div><div><div class="lbl">فیصد</div><div class="val">' + r.percent + '%</div></div><div><div class="lbl">گریڈ</div><div class="val"><span class="grade-badge ' + r.gradeClass + '" style="padding:2px 10px;font-size:14px;">' + r.grade + '</span></div></div></div>';
+  html += '<div class="rp-footer"><div>📝 دستخط: ______</div><div>💻 KHALIL Developer</div><div>📅 ' + r.date + '</div></div>';
+  html += '<button class="btn btn-gold" onclick="window.print()" style="width:100%;margin-top:15px;">🖨️ پرنٹ کریں</button></div>';
+  document.getElementById('printArea').innerHTML = html;
+}
+
+// ===== IMAGE PREVIEW =====
+function previewPhoto(e) { var f = e.target.files[0]; if (!f) return; var r = new FileReader(); r.onload = function(ev) { currentPhoto = ev.target.result; var p = document.getElementById('photoPreview'); p.src = currentPhoto; p.style.display = 'block'; }; r.readAsDataURL(f); }
+function previewTeacherPhoto(e) { var f = e.target.files[0]; if (!f) return; var r = new FileReader(); r.onload = function(ev) { teacherPhoto = ev.target.result; var p = document.getElementById('teacherPhotoPreview'); p.src = teacherPhoto; p.style.display = 'block'; }; r.readAsDataURL(f); }
+function previewStaffPhoto(e) { var f = e.target.files[0]; if (!f) return; var r = new FileReader(); r.onload = function(ev) { staffPhoto = ev.target.result; var p = document.getElementById('staffPhotoPreview'); p.src = staffPhoto; p.style.display = 'block'; }; r.readAsDataURL(f); }
+function previewAdmPhoto(e) { var f = e.target.files[0]; if (!f) return; var r = new FileReader(); r.onload = function(ev) { admPhoto = ev.target.result; var p = document.getElementById('admPhotoPreview'); p.src = admPhoto; p.style.display = 'block'; }; r.readAsDataURL(f); }
+
+// ===== TEACHERS =====
+async function addTeacher() {
+  var name = document.getElementById('tName').value.trim();
+  if (!name) { alert('نام ضروری'); return; }
+  var t = { id: Date.now(), name: name, father: document.getElementById('tFather').value, cnic: document.getElementById('tCnic').value, subject: document.getElementById('tSubject').value, qual: document.getElementById('tQual').value, phone: document.getElementById('tPhone').value, salary: document.getElementById('tSalary').value, designation: document.getElementById('tDesignation').value, photo: teacherPhoto };
+  await fbAdd('teachers', t);
+  teachers.push(t);
+  saveAll();
+  ['tName','tFather','tCnic','tSubject','tQual','tPhone','tSalary','tDesignation'].forEach(function(id) { var el = document.getElementById(id); if (el) el.value = ''; });
+  document.getElementById('teacherPhotoPreview').style.display = 'none'; teacherPhoto = '';
+  renderTeachers(); updateStats(); alert('✅ استاد شامل!');
+}
+
+function renderTeachers() {
+  var html = '';
+  for (var i = 0; i < teachers.length; i++) {
+    var t = teachers[i];
+    html += '<div class="teacher-card">';
+    html += t.photo ? '<img src="' + t.photo + '" class="t-photo">' : '<div class="t-photo" style="display:flex;align-items:center;justify-content:center;font-size:32px;">👨‍🏫</div>';
+    html += '<h4>' + t.name + '</h4>';
+    if (t.designation) html += '<p><span class="badge">' + t.designation + '</span></p>';
+    if (t.subject) html += '<p>📚 ' + t.subject + '</p>';
+    if (t.phone) html += '<p>📞 ' + t.phone + '</p>';
+    html += '<button class="btn btn-danger" style="padding:4px 10px;font-size:11px;margin-top:5px;" onclick="delTeacher(' + t.id + ')">🗑️</button></div>';
+  }
+  if (!html) html = '<div style="text-align:center;padding:20px;color:#999;">📭 کوئی استاد نہیں</div>';
+  document.getElementById('teachersGrid').innerHTML = html;
+}
+
+async function delTeacher(id) { if (!confirm('حذف؟')) return; await fbDelete('teachers', { id: id }); teachers = teachers.filter(function(t) { return t.id !== id; }); saveAll(); renderTeachers(); updateStats(); }
+
+// ===== STUDENTS =====
+async function addStudent() {
+  var name = document.getElementById('sName').value.trim();
+  if (!name) { alert('نام ضروری'); return; }
+  var s = { id: Date.now(), name: name, father: document.getElementById('sFather').value, dob: document.getElementById('sDob').value, cls: document.getElementById('sClass').value, roll: document.getElementById('sRoll').value, phone: document.getElementById('sPhone').value, address: document.getElementById('sAddress').value, photo: currentPhoto };
+  await fbAdd('students', s);
+  students.push(s);
+  saveAll();
+  ['sName','sFather','sDob','sRoll','sPhone','sAddress'].forEach(function(id) { document.getElementById(id).value = ''; });
+  document.getElementById('sClass').value = '';
+  document.getElementById('photoPreview').style.display = 'none'; currentPhoto = '';
+  renderStudents(); renderCardOptions(); renderClassGrid(); updateStats(); alert('✅ طالب علم شامل!');
+}
+
+function renderStudents() {
+  var search = (document.getElementById('searchStudent').value || '').toLowerCase();
+  var html = '';
+  for (var i = 0; i < students.length; i++) {
+    var s = students[i];
+    if (search && s.name.toLowerCase().indexOf(search) === -1) continue;
+    html += '<tr><td>' + (s.photo ? '<img src="' + s.photo + '" style="width:35px;height:35px;border-radius:50%;object-fit:cover;">' : '👤') + '</td>';
+    html += '<td>' + s.name + '</td><td>' + (s.father||'-') + '</td>';
+    html += '<td><span class="badge">' + (CLASS_URDU[s.cls]||s.cls||'-') + '</span></td>';
+    html += '<td>' + (s.roll||'-') + '</td>';
+    html += '<td><button class="btn btn-danger" style="padding:4px 8px;font-size:11px;" onclick="delStudent(' + s.id + ')">🗑️</button></td></tr>';
+  }
+  document.getElementById('studentsTable').innerHTML = html;
+}
+
+async function delStudent(id) { if (!confirm('حذف؟')) return; await fbDelete('students', { id: id }); students = students.filter(function(s) { return s.id !== id; }); saveAll(); renderStudents(); renderCardOptions(); renderClassGrid(); updateStats(); }
+
+// ===== STAFF =====
+async function addStaff() {
+  var name = document.getElementById('stName').value.trim();
+  if (!name) { alert('نام ضروری'); return; }
+  var s = { id: Date.now(), name: name, role: document.getElementById('stRole').value, phone: document.getElementById('stPhone').value, salary: document.getElementById('stSalary').value, photo: staffPhoto };
+  await fbAdd('staff', s);
+  staff.push(s);
+  saveAll();
+  ['stName','stRole','stPhone','stSalary'].forEach(function(id) { document.getElementById(id).value = ''; });
+  document.getElementById('staffPhotoPreview').style.display = 'none'; staffPhoto = '';
+  renderStaff(); updateStats(); alert('✅ اسٹاف شامل!');
+}
+
+function renderStaff() {
+  var html = '';
+  for (var i = 0; i < staff.length; i++) {
+    var s = staff[i];
+    html += '<div class="staff-card">';
+    html += s.photo ? '<img src="' + s.photo + '" class="s-photo">' : '<div class="s-photo" style="display:flex;align-items:center;justify-content:center;font-size:28px;">👤</div>';
+    html += '<h4>' + s.name + '</h4><p><span class="badge">' + (s.role||'Staff') + '</span></p>';
+    html += '<p>📞 ' + (s.phone||'-') + '</p>';
+    html += '<button class="btn btn-danger" style="padding:4px 10px;font-size:11px;" onclick="delStaff(' + s.id + ')">🗑️</button></div>';
+  }
+  if (!html) html = '<div style="text-align:center;padding:20px;color:#999;">📭 کوئی اسٹاف نہیں</div>';
+  document.getElementById('staffGrid').innerHTML = html;
+}
+
+async function delStaff(id) { if (!confirm('حذف؟')) return; await fbDelete('staff', { id: id }); staff = staff.filter(function(s) { return s.id !== id; }); saveAll(); renderStaff(); updateStats(); }
+
+// ===== ADMISSIONS =====
+function generateAdmNo() {
+  var year = (document.getElementById('academicYear').value || '2025-26').split('-')[0];
+  var count = 1;
+  for (var i = 0; i < admissions.length; i++) if (admissions[i].admNo && admissions[i].admNo.indexOf(year) > -1) count++;
+  var num = String(count); while (num.length < 3) num = '0' + num;
+  document.getElementById('newAdmNo').textContent = 'ADM-' + year + '-' + num;
+}
+
+async function submitAdmission() {
+  var name = document.getElementById('admName').value.trim();
+  var father = document.getElementById('admFather').value.trim();
+  var cls = document.getElementById('admClass').value;
+  if (!name || !father || !cls) { alert('نام، والد اور کلاس ضروری'); return; }
+  var admNo = document.getElementById('newAdmNo').textContent;
+  var admission = { id: Date.now(), admNo: admNo, name: name, father: father, dob: document.getElementById('admDob').value, phone: document.getElementById('admPhone').value, address: document.getElementById('admAddress').value, cls: cls, roll: document.getElementById('admRoll').value, admDate: new Date().toISOString().split('T')[0], photo: admPhoto, academicYear: document.getElementById('academicYear').value };
+  await fbAdd('admissions', admission);
+  admissions.push(admission);
+  var stuObj = { id: admission.id, name: admission.name, father: admission.father, dob: admission.dob, cls: admission.cls, roll: admission.roll, phone: admission.phone, address: admission.address, photo: admission.photo, admNo: admission.admNo };
+  await fbAdd('students', stuObj);
+  students.push(stuObj);
+  saveAll();
+  ['admName','admFather','admDob','admPhone','admAddress','admClass','admRoll'].forEach(function(id) { document.getElementById(id).value = ''; });
+  document.getElementById('admPhotoPreview').style.display = 'none'; admPhoto = '';
+  generateAdmNo(); renderAdmissions(); renderStudents(); renderCardOptions(); renderClassGrid(); updateStats();
+  alert('✅ ایڈمیشن مکمل!\n🎫 ' + admNo);
+}
+
+function renderAdmissions() {
+  var html = '';
+  for (var i = admissions.length - 1; i >= 0; i--) {
+    var a = admissions[i];
+    html += '<div class="admission-card"><div class="adm-header"><span class="adm-no">🎫 ' + a.admNo + '</span><span class="adm-date">📅 ' + (a.admDate||'-') + '</span></div>';
+    html += '<div class="adm-body"><b>👤</b> ' + a.name + '<br><b>👨</b> ' + (a.father||'-') + '<br><b>🏫</b> <span class="badge">' + (CLASS_URDU[a.cls]||a.cls||'-') + '</span></div>';
+    html += '<button class="btn btn-danger" style="padding:6px 12px;font-size:11px;margin-top:5px;" onclick="delAdmission(' + a.id + ')">🗑️</button></div>';
+  }
+  if (!html) html = '<div style="text-align:center;padding:20px;color:#999;">📭 کوئی ایڈمیشن نہیں</div>';
+  document.getElementById('admissionsList').innerHTML = html;
+}
+
+async function delAdmission(id) { if (!confirm('حذف؟')) return; await fbDelete('admissions', { id: id }); await fbDelete('students', { id: id }); admissions = admissions.filter(function(a) { return a.id !== id; }); students = students.filter(function(s) { return s.id !== id; }); saveAll(); renderAdmissions(); renderStudents(); renderCardOptions(); renderClassGrid(); updateStats(); generateAdmNo(); }
+
+// ===== RESULTS =====
+function loadDefaultSubjects() {
+  document.getElementById('subjectsContainer').innerHTML = '';
+  for (var i = 0; i < DEFAULT_SUBJECTS.length; i++) addSubjectRow(DEFAULT_SUBJECTS[i].name, DEFAULT_SUBJECTS[i].total);
+}
+
+function addSubjectRow(name, total) {
+  name = name || ''; total = total || 100;
+  var div = document.createElement('div');
+  div.className = 'subject-row';
+  div.innerHTML = '<input type="text" class="sub-name" placeholder="مضمون" value="' + name + '" oninput="updateResultPreview()"><input type="number" class="sub-total" placeholder="کل" value="' + total + '" oninput="updateResultPreview()"><input type="number" class="sub-obtained" placeholder="حاصل" oninput="updateResultPreview()"><div class="sub-grade" style="text-align:center;font-weight:bold;">-</div>';
+  document.getElementById('subjectsContainer').appendChild(div);
+}
+
+function getGrade(percent) {
+  if (percent >= 90) return { grade: 'A+', cls: 'grade-Ap' };
+  if (percent >= 80) return { grade: 'A', cls: 'grade-A' };
+  if (percent >= 70) return { grade: 'B', cls: 'grade-B' };
+  if (percent >= 60) return { grade: 'C', cls: 'grade-C' };
+  if (percent >= 50) return { grade: 'D', cls: 'grade-D' };
+  if (percent >= 40) return { grade: 'E', cls: 'grade-D' };
+  return { grade: 'F', cls: 'grade-F' };
+}
+
+function updateResultPreview() {
+  var rows = document.querySelectorAll('.subject-row');
+  var totalSum = 0, obtainedSum = 0;
+  for (var i = 0; i < rows.length; i++) {
+    var row = rows[i];
+    var total = parseFloat(row.querySelector('.sub-total').value) || 0;
+    var obtained = parseFloat(row.querySelector('.sub-obtained').value) || 0;
+    var gradeDiv = row.querySelector('.sub-grade');
+    if (total > 0 && row.querySelector('.sub-obtained').value !== '') {
+      var pct = (obtained / total) * 100;
+      var g = getGrade(pct);
+      gradeDiv.textContent = g.grade;
+      gradeDiv.style.background = 'linear-gradient(135deg,#1e3c72,#2a5298)';
+      gradeDiv.style.color = '#fff';
+      gradeDiv.style.padding = '4px 8px';
+      gradeDiv.style.borderRadius = '12px';
+      gradeDiv.style.fontSize = '11px';
+    } else { gradeDiv.textContent = '-'; gradeDiv.style.background = 'transparent'; gradeDiv.style.color = '#333'; }
+    totalSum += total; obtainedSum += obtained;
+  }
+  var percent = totalSum > 0 ? ((obtainedSum / totalSum) * 100).toFixed(2) : 0;
+  var overall = getGrade(percent);
+  document.getElementById('sumTotal').textContent = totalSum;
+  document.getElementById('sumObtained').textContent = obtainedSum;
+  document.getElementById('sumPercent').textContent = percent + '%';
+  document.getElementById('sumGrade').innerHTML = '<span class="grade-badge ' + overall.cls + '">' + overall.grade + '</span>';
+  document.getElementById('resultSummary').style.display = 'grid';
+}
+
+function loadClassStudents() {
+  var cls = document.getElementById('resClass').value;
+  var sel = document.getElementById('resStudent');
+  sel.innerHTML = '<option value="">طالب علم</option>';
+  for (var i = 0; i < students.length; i++) if (students[i].cls === cls) sel.innerHTML += '<option value="' + students[i].id + '">' + students[i].name + ' (رول: ' + (students[i].roll||'-') + ')</option>';
+}
+
+async function saveResult() {
+  var cls = document.getElementById('resClass').value;
+  var studentId = parseInt(document.getElementById('resStudent').value);
+  var examName = document.getElementById('resExamName').value || 'سالانہ امتحان';
+  var examTerm = document.getElementById('resExamTerm').value || 'Final';
+  if (!cls || !studentId) { alert('کلاس اور طالب علم منتخب کریں'); return; }
+  var student = students.find(function(s) { return s.id === studentId; });
+  if (!student) return;
+  var subjects = []; var totalSum = 0, obtainedSum = 0;
+  var rows = document.querySelectorAll('.subject-row');
+  for (var i = 0; i < rows.length; i++) {
+    var row = rows[i];
+    var name = row.querySelector('.sub-name').value.trim();
+    var total = parseFloat(row.querySelector('.sub-total').value) || 0;
+    var obtained = parseFloat(row.querySelector('.sub-obtained').value) || 0;
+    if (name && total > 0 && row.querySelector('.sub-obtained').value !== '') {
+      var pct = (obtained / total) * 100;
+      var g = getGrade(pct);
+      subjects.push({ name: name, total: total, obtained: obtained, grade: g.grade, percent: pct.toFixed(1) });
+      totalSum += total; obtainedSum += obtained;
+    }
+  }
+  if (subjects.length === 0) { alert('کم از کم ایک مضمون بھریں'); return; }
+  var overallPercent = (obtainedSum / totalSum) * 100;
+  var overallGrade = getGrade(overallPercent);
+  var resultObj = { id: Date.now(), admNo: student.admNo || '', studentId: student.id, studentName: student.name, fatherName: student.father || '', cls: cls, roll: student.roll || '', photo: student.photo || '', examName: examName, examTerm: examTerm, subjects: subjects, totalMarks: totalSum, obtainedMarks: obtainedSum, percent: overallPercent.toFixed(2), grade: overallGrade.grade, gradeClass: overallGrade.cls, academicYear: document.getElementById('academicYear').value, date: new Date().toISOString().split('T')[0] };
+  await fbAdd('results', resultObj);
+  results.push(resultObj);
+  saveAll(); renderResultsList(); renderPrintOptions(); updateStats();
+  document.getElementById('resClass').value='';
+  document.getElementById('resStudent').innerHTML='<option value="">طالب علم</option>';
+  document.getElementById('resExamName').value='';
+  document.getElementById('resExamTerm').value='';
+  loadDefaultSubjects();
+  document.getElementById('resultSummary').style.display='none';
+  alert('✅ نتیجہ محفوظ!\n👤 ' + student.name + '\n📊 ' + overallPercent.toFixed(2) + '%\n🎓 ' + overallGrade.grade);
+}
+
+function renderResultsList() {
+  var html = '';
+  for (var i = results.length - 1; i >= 0; i--) {
+    var r = results[i];
+    html += '<div class="admission-card" style="border-color:#9b59b6;background:linear-gradient(135deg,#fff,#f3e5f5);">';
+    html += '<div class="adm-header" style="border-bottom-color:#9b59b6;"><span class="adm-no" style="background:linear-gradient(135deg,#8e44ad,#9b59b6);">' + r.examName + '</span><span class="adm-date">📅 ' + r.date + '</span></div>';
+    html += '<div class="adm-body"><b>👤</b> ' + r.studentName + '<br><b>🏫</b> <span class="badge">' + (CLASS_URDU[r.cls]||r.cls) + '</span><br><b>📊</b> ' + r.obtainedMarks + '/' + r.totalMarks + ' (' + r.percent + '%)<br><b>🎓</b> <span class="grade-badge ' + r.gradeClass + '" style="padding:2px 10px;font-size:11px;">' + r.grade + '</span></div>';
+    html += '<div style="display:flex;gap:5px;margin-top:5px;flex-wrap:wrap;"><button class="btn btn-gold" style="padding:6px 12px;font-size:11px;" onclick="quickPrint(' + r.id + ')">🖨️ پرنٹ</button><button class="btn btn-danger" style="padding:6px 12px;font-size:11px;" onclick="delResult(' + r.id + ')">🗑️</button></div></div>';
+  }
+  if (!html) html = '<div style="text-align:center;padding:20px;color:#999;">📭 کوئی نتیجہ نہیں</div>';
+  document.getElementById('resultsList').innerHTML = html;
+}
+
+function quickPrint(id) { document.getElementById('printStudent').value = id; showSection('resultPrint'); generatePrintCard(); }
+async function delResult(id) { if (!confirm('حذف؟')) return; await fbDelete('results', { id: id }); results = results.filter(function(r) { return r.id !== id; }); saveAll(); renderResultsList(); renderPrintOptions(); updateStats(); }
+
+// ===== CLASSES =====
+function renderClassGrid() {
+  var html = '';
+  for (var i = 0; i < ALL_CLASSES.length; i++) {
+    var c = ALL_CLASSES[i];
+    var count = 0;
+    for (var j = 0; j < students.length; j++) if (students[j].cls === c) count++;
+    html += '<div class="class-card"><div class="cls-num">' + (c==='Nursery'?'N':c==='KG'?'K':c.replace('Class ','')) + '</div><div><b style="font-size:11px;">' + (CLASS_URDU[c]||c) + '</b></div><div class="cls-info">👨‍🎓 ' + count + '</div></div>';
+  }
+  document.getElementById('classGrid').innerHTML = html;
+}
+
+// ===== TIMETABLE =====
+async function addTT() {
+  var cls = document.getElementById('ttClass').value;
+  if (!cls) { alert('کلاس ضروری'); return; }
+  var t = { id: Date.now(), cls: cls, day: document.getElementById('ttDay').value, period: document.getElementById('ttPeriod').value, subject: document.getElementById('ttSubject').value, time: document.getElementById('ttTime').value };
+  await fbAdd('timetable', t);
+  timetable.push(t);
+  saveAll();
+  ['ttPeriod','ttSubject','ttTime'].forEach(function(id) { document.getElementById(id).value = ''; });
+  renderTT();
+}
+
+function renderTT() {
+  var html = '';
+  for (var i = 0; i < timetable.length; i++) {
+    var t = timetable[i];
+    html += '<div class="tt-cell"><b>' + t.cls + ' - ' + (t.day||'') + '</b>' + (t.period||'') + ' ' + (t.subject||'') + '<br><small>' + (t.time||'') + '</small><br><button class="btn btn-danger" style="padding:3px 8px;font-size:10px;margin-top:5px;" onclick="delTT(' + t.id + ')">🗑️</button></div>';
+  }
+  document.getElementById('ttGrid').innerHTML = html;
+}
+
+async function delTT(id) { timetable = timetable.filter(function(t) { return t.id !== id; }); await fbDelete('timetable', { id: id }); saveAll(); renderTT(); }
+
+// ===== STUDENT CARD =====
+function renderCardOptions() {
+  var sel = document.getElementById('cardStudent');
+  sel.innerHTML = '<option value="">طالب علم</option>';
+  for (var i = 0; i < students.length; i++) sel.innerHTML += '<option value="' + students[i].id + '">' + students[i].name + ' - ' + (CLASS_URDU[students[i].cls]||students[i].cls||'') + '</option>';
+}
+
+function generateCard() {
+  var id = parseInt(document.getElementById('cardStudent').value);
+  var s = students.find(function(x) { return x.id === id; });
+  if (!s) { alert('طالب علم منتخب کریں'); return; }
+  var school = localStorage.getItem('apms_school') || 'علی پبلک ماڈل سکول';
+  var year = document.getElementById('academicYear').value;
+  var html = '<div class="student-card"><div class="card-header">' + school + '</div>';
+  html += s.photo ? '<img src="' + s.photo + '" class="photo">' : '<div class="photo" style="display:flex;align-items:center;justify-content:center;font-size:40px;">👤</div>';
+  html += '<div class="info"><p><b>نام:</b> ' + s.name + '</p><p><b>والد:</b> ' + (s.father||'-') + '</p>';
+  if (s.admNo) html += '<p><b>ایڈمیشن:</b> ' + s.admNo + '</p>';
+  html += '<p><b>کلاس:</b> ' + (CLASS_URDU[s.cls]||s.cls||'-') + '</p><p><b>رول:</b> ' + (s.roll||'-') + '</p><p><b>پیدائش:</b> ' + (s.dob||'-') + '</p><p><b>فون:</b> ' + (s.phone||'-') + '</p><p><b>پتہ:</b> ' + (s.address||'-') + '</p><p><b>تعلیمی سال:</b> ' + year + '</p></div>';
+  html += '<div class="card-footer">💻 KHALIL Developer | © 2025</div><button class="btn btn-gold" onclick="window.print()" style="width:100%;">🖨️ پرنٹ کریں</button></div>';
+  document.getElementById('cardOutput').innerHTML = html;
+}
+
+// ===== SETTINGS =====
+function saveSettings() {
+  var name = document.getElementById('setSchoolName').value;
+  var addr = document.getElementById('setAddress').value;
+  if (name) { localStorage.setItem('apms_school', name); document.getElementById('schoolName').textContent = name; }
+  if (addr) { localStorage.setItem('apms_addr', addr); document.getElementById('schoolAddr').textContent = addr; }
+  alert('✅ محفوظ!');
+}
+
+function clearAll() { if (!confirm('تمام ڈیٹا حذف؟')) return; localStorage.clear(); location.reload(); }
+
+function updateStats() {
+  document.getElementById('statStudents').textContent = students.length;
+  document.getElementById('statTeachers').textContent = teachers.length;
+  document.getElementById('statStaff').textContent = staff.length;
+  document.getElementById('statResults').textContent = results.length;
+}
+
+function renderAll() {
+  renderStudents(); renderTeachers(); renderClassGrid();
+  renderStaff(); renderTT(); renderCardOptions();
+  renderAdmissions(); renderResultsList(); renderPrintOptions();
+  renderUsers(); updateStats();
+}
+
+// ===== BOOT =====
+window.addEventListener('load', function() {
+  initApp();
+  document.getElementById('loginPass').addEventListener('keypress', function(e) { if (e.key === 'Enter') doLogin(); });
+  document.getElementById('loginId').addEventListener('keypress', function(e) { if (e.key === 'Enter') document.getElementById('loginPass').focus(); });
+  setInterval(updateDateTime, 30000);
+  var ss = localStorage.getItem('apms_school');
+  var sa = localStorage.getItem('apms_addr');
+  var sy = localStorage.getItem('apms_year');
+  if (ss) document.getElementById('schoolName').textContent = ss;
+  if (sa) document.getElementById('schoolAddr').textContent = sa;
+  if (sy) document.getElementById('academicYear').value = sy;
+});
+</script>
+</body>
+</html>
